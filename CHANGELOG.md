@@ -8,6 +8,8 @@
   reminder, no time-left badges — until the player presses "I understand". The answer is stored in
   the browser (`localStorage`), so it is asked once. Afterwards the "i" button in the box shows the notice
   again. It is in the player's interface language (IT/EN/DE/FR/ES/PL/TR/PT/RU), English otherwise.
+- **Language fallback fixed:** an interface in a language the tool does not speak (e.g. Romanian)
+  now gets English. Before, it kept the last supported language seen (Spanish stayed Spanish).
 
 ## 1.2.0
 

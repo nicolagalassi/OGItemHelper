@@ -964,6 +964,11 @@
             // Two matching entries is already beyond coincidence between these languages, and the
             // highest score settles the words they share ("empire" and "alliance" are both).
             if(best && score >= 2) { lsSet(LANG_SEEN, best); return best; }
+            // A full menu that matches none of ours is a language we do not speak (Romanian, Dutch…):
+            // that is English, and it is remembered as such. Falling through to the cached verdict
+            // here kept the PREVIOUS language — Spanish stayed Spanish after switching to Romanian.
+            // Only a sparse menu (a page that draws little of it) is too thin to judge.
+            if(menu.length >= 6) { lsSet(LANG_SEEN, 'en'); return 'en'; }
         }
         const seen = lsGet(LANG_SEEN);
         return (seen && DICT[seen]) ? seen : 'en';
