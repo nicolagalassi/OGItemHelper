@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Item Helper for OGame
 // @namespace    https://github.com/nicolagalassi
-// @version      1.3.4
+// @version      1.3.5
 // @description  A searchable, filterable inventory box on the shop page: what is already active on the planet, the game's own categories as filters, the game's own item panel one click away, the same item carried to the next planet, and the time left written on active items and officers on every page. Settings panel with colours and thresholds. IT/EN/DE/FR/ES/PL/TR/PT/RU. Standalone userscript, no dependencies.
 // @author       nicolagalassi
 // @match        https://*.ogame.gameforge.com/game/*
@@ -1677,19 +1677,20 @@
     // game's router resolves to that item regardless of category/pagination.
     function openNativeItem(uuid, fromShop)
     {
-        // A variant can live in either section (you may own the 7d but not the 30d/90d), so we look
-        // for the tile anywhere, not only in the preferred slider — searching just one section was
-        // why duration links did nothing for items flagged active.
-        const findTile = () => document.querySelector(`a.detail_button[ref="${uuid}"]`);
+        // The tile is looked up in both sliders, but only a VISIBLE one is clicked: the slider of the
+        // tab not in front can still sit in the DOM, and clicking a hidden shop tile from the
+        // Inventory tab left the game's inventory drawn empty ("tutto (0)").
+        const findTile = () => [...document.querySelectorAll(`a.detail_button[ref="${uuid}"]`)].find(t => t.offsetParent !== null) || null;
         const wanted = fromShop ? '.tabSelectionTab.shopTab' : '.tabSelectionTab.inventoryTab';
-        const other = fromShop ? '.tabSelectionTab.inventoryTab' : '.tabSelectionTab.shopTab';
 
         const t0 = findTile();
         if(t0) { t0.click(); return; }
 
-        // Not rendered → switch to the preferred tab and WAIT for the game to render it (the
-        // deep-link hash only opens an item on a fresh page load, not on the same page). If it
-        // still has not appeared, try the other tab. Event-driven, hard-capped, no server polling.
+        // Not rendered → switch to the tab the item lives in and WAIT for the game to render it
+        // (the deep-link hash only opens an item on a fresh page load, not on the same page).
+        // No fallback to the other tab: an item you do not own is never in the inventory, one you
+        // own is never only in the shop, and switching tab while the game is still loading the
+        // first one is what broke its render. Event-driven, hard-capped, no server polling.
         const tab = document.querySelector(wanted);
         if(tab && !tab.classList.contains('active')) tab.click();
 
@@ -1697,13 +1698,7 @@
         const tryClick = () => { if(done) return true; const t = findTile(); if(t) { done = true; t.click(); return true; } return false; };
         const obs = new MutationObserver(() => { if(tryClick()) obs.disconnect(); });
         obs.observe(document.querySelector('#buttonz') || document.body, { childList: true, subtree: true });
-        setTimeout(() =>
-        {
-            if(done) return;
-            const alt = document.querySelector(other);   // fall back to the other section
-            if(alt && !alt.classList.contains('active')) alt.click();
-        }, 1200);
-        setTimeout(() => obs.disconnect(), 6000); // local cleanup only, never a server call
+        setTimeout(() => obs.disconnect(), 8000); // local cleanup only, never a server call
     }
 
     // --------------------------------------------------------------------- UI

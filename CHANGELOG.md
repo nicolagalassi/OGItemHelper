@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.5
+
+- **"Buy" from the Inventory tab fixed:** it could click a hidden shop tile, or switch back to the
+  inventory while the shop was still loading, leaving the game's inventory drawn empty. It now
+  switches to the shop, waits for it, and clicks only a visible tile.
+
 ## 1.3.4
 
 - **Items gone from the shop are no longer offered:** event items that left the shop stayed in the
