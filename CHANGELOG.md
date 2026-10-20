@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.2
+
+- **Time-left badges off by default:** the timers on active items and officers now appear only
+  after switching them on in Settings (⚙). A choice already made in Settings is kept.
+
 ## 1.3.1
 
 - **Bogus filter chips fixed:** the category labels could be picked up from unrelated page

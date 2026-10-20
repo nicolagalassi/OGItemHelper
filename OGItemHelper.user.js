@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Item Helper for OGame
 // @namespace    https://github.com/nicolagalassi
-// @version      1.3.1
+// @version      1.3.2
 // @description  A searchable, filterable inventory box on the shop page: what is already active on the planet, the game's own categories as filters, the game's own item panel one click away, the same item carried to the next planet, and the time left written on active items and officers on every page. Settings panel with colours and thresholds. IT/EN/DE/FR/ES/PL/TR/PT/RU. Standalone userscript, no dependencies.
 // @author       nicolagalassi
 // @match        https://*.ogame.gameforge.com/game/*
@@ -2308,7 +2308,8 @@
     //          it — the artwork stays untouched. Item tiles take a small corner label. The whole
     //          thing is a switch away from off.
     const TMR_OFF_KEY = 'oih_timers_off';
-    const timersOn = () => { try { return localStorage.getItem(TMR_OFF_KEY) !== '1'; } catch(e) { return true; } };
+    // Off by default: only an explicit '0' (switched on in Settings) turns the badges on.
+    const timersOn = () => { try { return localStorage.getItem(TMR_OFF_KEY) === '0'; } catch(e) { return false; } };
 
     // Officers keep their remaining time as words inside the tooltip, in the player's language.
     const OFFICER_RE = [
