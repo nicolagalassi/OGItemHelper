@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Item Helper for OGame
 // @namespace    https://github.com/nicolagalassi
-// @version      1.3.2
+// @version      1.3.3
 // @description  A searchable, filterable inventory box on the shop page: what is already active on the planet, the game's own categories as filters, the game's own item panel one click away, the same item carried to the next planet, and the time left written on active items and officers on every page. Settings panel with colours and thresholds. IT/EN/DE/FR/ES/PL/TR/PT/RU. Standalone userscript, no dependencies.
 // @author       nicolagalassi
 // @match        https://*.ogame.gameforge.com/game/*
@@ -1920,9 +1920,12 @@
                 // e.g. a Kraken and its lifeform counterpart — into one card whose variants had no
                 // duration to name, so they came out as a meaningless "#1 / #2" picker.
                 // Grouping off → the key is the item itself, so each duration keeps its own card.
-                const key = PREFS.groupDur
+                // Copies with a deadline never share a card with the undated ones: the card shows
+                // ONE amount and ONE deadline, and "×8 ⏳ 6h" read as eight items about to expire
+                // when only one was.
+                const key = (PREFS.groupDur
                     ? baseName(it) + '|' + (it.effect || '').toLowerCase().slice(0, 60)
-                    : it.uuid;
+                    : it.uuid) + (it.owned && it.expiresAt > 0 ? '|exp' : '');
                 (groups[key] || (groups[key] = [])).push(it);
             });
             let list = Object.values(groups);

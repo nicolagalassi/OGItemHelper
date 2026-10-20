@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.3
+
+- **Expiring copies get their own card:** copies of an item with a deadline are no longer merged
+  with the copies of the same item that have none. Before, 1 expiring + 7 undated showed as one
+  card "×8 ⏳ 6h", as if all eight were about to expire; now they are two cards, ×1 with the
+  deadline and ×7 without.
+
 ## 1.3.2
 
 - **Time-left badges off by default:** the timers on active items and officers now appear only
