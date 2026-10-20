@@ -1,12 +1,15 @@
 # Item Helper for OGame
 
+![Item Helper for OGame](https://i.ibb.co/chPtsm2w/itemhelper.jpg)
+
 A userscript for **OGame v13** (it still runs on v12): a searchable inventory box on the shop page —
 what you own, what is already active on this planet, the different durations of an item grouped
 under one button, and a jump to the same item on the next planet. It never activates anything — it
 opens the game's own item panel and you press the button.
 
-It is a single, self-contained file: install [`OGItemHelper.user.js`](OGItemHelper.user.js), that is
-the whole tool.
+It is a single, self-contained file. Install it from
+[Greasy Fork](https://greasyfork.org/it/scripts/591989-item-helper-for-ogame); presentation and
+discussion on the [OGame Origin forum](https://forum.origin.ogame.gameforge.com/forum/thread/558-item-helper-for-ogame).
 
 > **Status: tolerated by the OGame Origin team.** The tool works next to premium content (shop
 > items, Dark Matter purchases and activations), so on its first use it shows a notice about that,
@@ -16,7 +19,16 @@ the whole tool.
 ## Install
 
 1. Install [Tampermonkey](https://www.tampermonkey.net/).
-2. Open [`OGItemHelper.user.js`](OGItemHelper.user.js) and install it.
+2. Open [Item Helper for OGame on Greasy Fork](https://greasyfork.org/it/scripts/591989-item-helper-for-ogame)
+   and press "Install this script".
+
+## Screenshots
+
+![Screenshot 1](https://i.ibb.co/Vp5GqkwX/schermata-20261020-171344.png)
+![Screenshot 2](https://i.ibb.co/gL6y9J1D/schermata-20261020-171249.png)
+![Screenshot 3](https://i.ibb.co/ycRtDKmZ/schermata-20261020-171203.png)
+![Screenshot 4](https://i.ibb.co/yFdskhhZ/schermata-20261020-171138.png)
+![Screenshot 5](https://i.ibb.co/0j80Q1mw/schermata-20261020-171107.png)
 
 ## Compliance
 
