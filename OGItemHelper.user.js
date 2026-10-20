@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Item Helper for OGame
 // @namespace    https://github.com/nicolagalassi
-// @version      1.3.3
+// @version      1.3.4
 // @description  A searchable, filterable inventory box on the shop page: what is already active on the planet, the game's own categories as filters, the game's own item panel one click away, the same item carried to the next planet, and the time left written on active items and officers on every page. Settings panel with colours and thresholds. IT/EN/DE/FR/ES/PL/TR/PT/RU. Standalone userscript, no dependencies.
 // @author       nicolagalassi
 // @match        https://*.ogame.gameforge.com/game/*
@@ -1343,6 +1343,12 @@
                 r.owned = n > 0;
             });
         }
+
+        // Same rule for the shop: `items_shop` is the complete offer of the moment, so whatever it
+        // no longer lists has left the shop (event items come and go). Keeping it would show a
+        // "Buy" for something that cannot be bought; if you still own it, the inventory side has it.
+        const jsShop = Array.isArray(obj.items_shop) ? obj.items_shop : [];
+        if(jsShop.length) Object.keys(mem.shop).forEach(ref => { if(!liveShop[ref]) delete mem.shop[ref]; });
 
         Object.entries(liveInv).forEach(([k, v]) => { mem.inv[k] = v; });
         Object.entries(liveShop).forEach(([k, v]) => { mem.shop[k] = v; });

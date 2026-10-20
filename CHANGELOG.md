@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.4
+
+- **Items gone from the shop are no longer offered:** event items that left the shop stayed in the
+  list as "Buy" and could not be found when clicked. Every read of the shop tab now drops what the
+  shop no longer sells; such items still show if you own them or have them active.
+
 ## 1.3.3
 
 - **Expiring copies get their own card:** copies of an item with a deadline are no longer merged
