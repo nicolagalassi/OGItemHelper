@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Item Helper for OGame
 // @namespace    https://github.com/nicolagalassi
-// @version      1.3.0
+// @version      1.3.1
 // @description  A searchable, filterable inventory box on the shop page: what is already active on the planet, the game's own categories as filters, the game's own item panel one click away, the same item carried to the next planet, and the time left written on active items and officers on every page. Settings panel with colours and thresholds. IT/EN/DE/FR/ES/PL/TR/PT/RU. Standalone userscript, no dependencies.
 // @author       nicolagalassi
 // @match        https://*.ogame.gameforge.com/game/*

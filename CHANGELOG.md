@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.1
+
+- **Bogus filter chips fixed:** the category labels could be picked up from unrelated page
+  elements, showing chips made of resource figures or coordinates. Labels now come only from the
+  game's own category buttons and links, anything with digits is refused, and the labels stored
+  by older versions are discarded and learned again.
+
 ## 1.3.0
 
 - **Notice on premium content**, asked for by the OGame Origin team with the toleration. The first
