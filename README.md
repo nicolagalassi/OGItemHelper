@@ -8,9 +8,10 @@ opens the game's own item panel and you press the button.
 It is a single, self-contained file: install [`OGItemHelper.user.js`](OGItemHelper.user.js), that is
 the whole tool.
 
-> **Status: not yet submitted for toleration.** Any tool that runs inside the OGame page must be
-> reviewed and tolerated by the OGame Origin team *before* being published. Until that happens this
-> repository stays private and the script is not distributed. See [AGENTS.md](AGENTS.md) §5.
+> **Status: tolerated by the OGame Origin team.** The tool works next to premium content (shop
+> items, Dark Matter purchases and activations), so on its first use it shows a notice about that,
+> which you must accept before it does anything; the ⓘ in the box shows it again. See
+> [CHANGELOG.md](CHANGELOG.md).
 
 It moved here from [PrOGect](https://github.com/nicolagalassi/PrOGect), a collection of OGame
 userscripts; its full history came with it.

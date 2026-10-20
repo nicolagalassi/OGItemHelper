@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Item Helper for OGame
 // @namespace    https://github.com/nicolagalassi
-// @version      1.2.0
+// @version      1.3.0
 // @description  A searchable, filterable inventory box on the shop page: what is already active on the planet, the game's own categories as filters, the game's own item panel one click away, the same item carried to the next planet, and the time left written on active items and officers on every page. Settings panel with colours and thresholds. IT/EN/DE/FR/ES/PL/TR/PT/RU. Standalone userscript, no dependencies.
 // @author       nicolagalassi
 // @match        https://*.ogame.gameforge.com/game/*
@@ -68,6 +68,12 @@
     counted. When even that does not fit it goes below the banner instead, so it never sits on top
     of the game's own bar.
 
+  PREMIUM-CONTENT NOTICE (asked for by the OGame Origin team when they tolerated the tool)
+  - The first time, the shop shows only a notice that the tool interacts with premium content
+    (items, Dark Matter purchases and activations); the tool does nothing until the player presses
+    "I understand". The acknowledgement is stored locally, and the ⓘ in the box shows the notice
+    again at any time. In the player's interface language, English otherwise.
+
   COMPLIANCE (OGame Origin tool rules — see AGENTS.md):
   - §1.1  1 click = 1 action. The helper never activates anything itself; it only opens the
           game's native item panel. The activation is the player's click on the game's button.
@@ -85,8 +91,9 @@
   - §1.7  Our box is added in normal flow; it never hides, resizes, moves or covers the shop
           image, ads or Shop menu. The overview reminder sits in the empty part of the planet
           banner: it covers no game element, and the player can dismiss it.
-  - §3    Comfort feature touching the shop UI/flow → GRAY AREA: get a ToolDev sign-off first.
-  - §5    Runs inside the OGame page → needs toleration before public distribution.
+  - §3    Comfort feature touching the shop UI/flow → GRAY AREA; signed off with the toleration (see §5).
+  - §5    Runs inside the OGame page → needed toleration; tolerated by the OGame Origin team, on
+          condition of the premium-content notice above.
 */
 
 (function()
@@ -197,6 +204,15 @@
             border-radius:3px;background:var(--row);font-size:11px;color:var(--mute);line-height:1.55}
         .oih_help.oih_hidden{display:none}
         .oih_help b{color:var(--text);font-weight:600}
+        .oih_help .oih_notice{margin:0}
+
+        /* ---- premium-content notice: first-use gate, and again behind the ⓘ ---- */
+        .oih_notice{padding:9px 11px;border:1px solid #8A6323;border-left:3px solid var(--gold);border-radius:3px;background:rgba(255,194,77,.07)}
+        .oih_noticeT{font-family:var(--disp);font-size:12.5px;letter-spacing:1px;text-transform:uppercase;color:var(--gold)}
+        .oih_noticeB{margin-top:6px;font-size:11.5px;line-height:1.55;color:var(--text)}
+        .oih_btn.oih_noticeOk{margin-top:9px;border-color:#9B7527;color:var(--gold)}
+        .oih_infoBtn{margin-left:auto}
+        .oih_infoBtn + .oih_helpBtn{margin-left:0}
 
         /* ---- grid ---- */
         .oih_grid{margin-top:8px;max-height:270px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;padding-right:2px}
@@ -957,6 +973,83 @@
     console.info('[OGItemHelper] language:', LANG, '— force another with localStorage.oih_lang_force');
     const T = key => (DICT[LANG] && DICT[LANG][key]) || DICT.en[key] || key;
 
+    // ---- Premium-content notice -----------------------------------------------------------------
+    // Asked for by the OGame Origin team when they tolerated the tool: it works next to shop items
+    // and Dark Matter, so the player must read and accept this before the tool does anything, and
+    // must be able to read it again later (the ⓘ in the box). The wording stays GENERAL on purpose —
+    // it must not describe how the tool works, so it stays true when the tool changes. English is
+    // the team's text; the other languages translate it without changing its meaning.
+    // Bump NOTICE_VER only if the team changes the text: every player is then asked again.
+    const NOTICE_VER = '1', NOTICE_KEY = 'oih_notice_ack';
+    const NOTICE = {
+        en: {
+            title: 'Notice: this tool interacts with premium content',
+            body: 'This tool interacts with premium content in the game, including items and purchases made with Dark Matter. You use it at your own risk. Always check what you are buying or activating before you confirm it in the game. Gameforge and the OGame Origin team take no responsibility for wrong, duplicate or unintended purchases or activations, or for any Dark Matter or items lost while using this tool. Such purchases will not be refunded or reversed. Please report problems with this tool to its author, not to Gameforge support.',
+            ok: 'I understand', info: 'Notice on premium content',
+        },
+        it: {
+            title: 'Avviso: questo strumento interagisce con contenuti premium',
+            body: 'Questo strumento interagisce con contenuti premium del gioco, inclusi gli oggetti e gli acquisti fatti con Materia Oscura. Lo usi a tuo rischio. Controlla sempre cosa stai comprando o attivando prima di confermarlo nel gioco. Gameforge e il team OGame Origin non si assumono alcuna responsabilità per acquisti o attivazioni errati, doppi o involontari, né per Materia Oscura o oggetti persi usando questo strumento. Questi acquisti non verranno rimborsati né annullati. Segnala i problemi di questo strumento al suo autore, non al supporto Gameforge.',
+            ok: 'Ho capito', info: 'Avviso sui contenuti premium',
+        },
+        de: {
+            title: 'Hinweis: Dieses Tool greift auf Premium-Inhalte zu',
+            body: 'Dieses Tool greift auf Premium-Inhalte des Spiels zu, darunter Gegenstände und Käufe mit Dunkler Materie. Die Nutzung erfolgt auf eigene Gefahr. Prüfe immer, was du kaufst oder aktivierst, bevor du es im Spiel bestätigst. Gameforge und das OGame-Origin-Team übernehmen keine Verantwortung für falsche, doppelte oder unbeabsichtigte Käufe oder Aktivierungen und auch nicht für Dunkle Materie oder Gegenstände, die bei der Nutzung dieses Tools verloren gehen. Solche Käufe werden weder erstattet noch rückgängig gemacht. Melde Probleme mit diesem Tool bitte seinem Autor, nicht dem Gameforge-Support.',
+            ok: 'Ich habe verstanden', info: 'Hinweis zu Premium-Inhalten',
+        },
+        fr: {
+            title: 'Avis : cet outil interagit avec du contenu premium',
+            body: "Cet outil interagit avec du contenu premium du jeu, notamment les objets et les achats effectués avec de l'antimatière. Tu l'utilises à tes propres risques. Vérifie toujours ce que tu achètes ou actives avant de le confirmer dans le jeu. Gameforge et l'équipe OGame Origin déclinent toute responsabilité pour des achats ou activations erronés, en double ou involontaires, ainsi que pour toute antimatière ou tout objet perdu en utilisant cet outil. Ces achats ne seront ni remboursés ni annulés. Signale les problèmes de cet outil à son auteur, pas au support Gameforge.",
+            ok: "J'ai compris", info: 'Avis sur le contenu premium',
+        },
+        es: {
+            title: 'Aviso: esta herramienta interactúa con contenido premium',
+            body: 'Esta herramienta interactúa con contenido premium del juego, incluidos los objetos y las compras realizadas con Materia Oscura. La usas bajo tu propio riesgo. Comprueba siempre lo que compras o activas antes de confirmarlo en el juego. Gameforge y el equipo de OGame Origin no se hacen responsables de compras o activaciones erróneas, duplicadas o no deseadas, ni de la Materia Oscura u objetos perdidos al usar esta herramienta. Dichas compras no se reembolsarán ni se revertirán. Informa de los problemas de esta herramienta a su autor, no al soporte de Gameforge.',
+            ok: 'Entendido', info: 'Aviso sobre contenido premium',
+        },
+        pl: {
+            title: 'Uwaga: to narzędzie korzysta z treści premium',
+            body: 'To narzędzie korzysta z treści premium w grze, w tym z przedmiotów i zakupów za Ciemną Materię. Używasz go na własne ryzyko. Zawsze sprawdzaj, co kupujesz lub aktywujesz, zanim potwierdzisz to w grze. Gameforge i zespół OGame Origin nie ponoszą odpowiedzialności za błędne, podwójne lub niezamierzone zakupy czy aktywacje ani za Ciemną Materię lub przedmioty utracone podczas korzystania z tego narzędzia. Takie zakupy nie zostaną zwrócone ani cofnięte. Problemy z tym narzędziem zgłaszaj jego autorowi, a nie pomocy technicznej Gameforge.',
+            ok: 'Rozumiem', info: 'Uwaga o treściach premium',
+        },
+        tr: {
+            title: 'Uyarı: bu araç premium içerikle etkileşime girer',
+            body: 'Bu araç, Karanlık Madde ile yapılan eşyalar ve satın alımlar dahil olmak üzere oyundaki premium içerikle etkileşime girer. Kullanım riski sana aittir. Oyunda onaylamadan önce ne satın aldığını veya etkinleştirdiğini her zaman kontrol et. Gameforge ve OGame Origin ekibi; hatalı, mükerrer veya istenmeyen satın alımlar ya da etkinleştirmeler için ve bu aracı kullanırken kaybedilen Karanlık Madde veya eşyalar için hiçbir sorumluluk kabul etmez. Bu tür satın alımlar iade edilmez veya geri alınmaz. Bu araçla ilgili sorunları Gameforge desteğine değil, aracın yazarına bildir.',
+            ok: 'Anladım', info: 'Premium içerik uyarısı',
+        },
+        pt: {
+            title: 'Aviso: esta ferramenta interage com conteúdo premium',
+            body: 'Esta ferramenta interage com conteúdo premium do jogo, incluindo itens e compras feitas com Matéria Negra. Você a usa por sua conta e risco. Sempre verifique o que está comprando ou ativando antes de confirmar no jogo. A Gameforge e a equipe OGame Origin não se responsabilizam por compras ou ativações erradas, duplicadas ou não intencionais, nem por Matéria Negra ou itens perdidos ao usar esta ferramenta. Essas compras não serão reembolsadas nem revertidas. Informe os problemas desta ferramenta ao seu autor, não ao suporte da Gameforge.',
+            ok: 'Entendi', info: 'Aviso sobre conteúdo premium',
+        },
+        ru: {
+            title: 'Внимание: этот инструмент работает с премиум-контентом',
+            body: 'Этот инструмент работает с премиум-контентом игры, включая предметы и покупки за Тёмную материю. Вы используете его на свой страх и риск. Всегда проверяйте, что вы покупаете или активируете, прежде чем подтвердить это в игре. Gameforge и команда OGame Origin не несут ответственности за ошибочные, повторные или непреднамеренные покупки и активации, а также за Тёмную материю или предметы, потерянные при использовании этого инструмента. Такие покупки не возмещаются и не отменяются. Сообщайте о проблемах с этим инструментом его автору, а не в поддержку Gameforge.',
+            ok: 'Я понимаю', info: 'Внимание: премиум-контент',
+        },
+    };
+    const N = key => (NOTICE[LANG] && NOTICE[LANG][key]) || NOTICE.en[key];
+    // Stored locally, like every other preference here; nothing is sent anywhere. If storage is
+    // blocked the notice simply asks again on the next page — never the other way round.
+    const noticeAcked = () => lsGet(NOTICE_KEY) === NOTICE_VER;
+
+    // The notice itself, as a block in normal flow like the box: it covers nothing the game draws
+    // (§1.7). `onAck` is passed only for the first-use gate, where the button must be pressed;
+    // reopened from the ⓘ it is just text to read again.
+    function noticeBlock(parent, onAck)
+    {
+        const n = el('div', 'oih_notice', parent);
+        el('div', 'oih_noticeT', n).textContent = '⚠ ' + N('title');
+        el('div', 'oih_noticeB', n).textContent = N('body');
+        if(onAck)
+        {
+            const ok = el('div', 'oih_btn oih_noticeOk', n);
+            ok.textContent = N('ok');
+            ok.addEventListener('click', () => { lsSet(NOTICE_KEY, NOTICE_VER); onAck(); });
+        }
+        return n;
+    }
+
     // The two shop sections read as ONE. OGame only populates the inventory data
     // (items_inventory / inventory slider) or the shop data (items_shop / shop slider) for the
     // tab currently rendered — never both at once. We do NOT auto-load them (that would be
@@ -1600,20 +1693,26 @@
     }
 
     // --------------------------------------------------------------------- UI
+    // Where our box goes: in normal flow, between the shop image/detail area and the inventory
+    // list (#buttonz). Fallbacks keep it inside the shop container. Null while the shop is not
+    // drawn yet. The first-use notice takes the same spot.
+    function boxSpot()
+    {
+        const buttonz = document.querySelector('#buttonz');
+        const planet = document.querySelector('#planet');
+        const inhalt = document.querySelector('#inhalt');
+        if(buttonz && buttonz.parentNode) return { parent: buttonz.parentNode, before: buttonz };
+        if(planet && inhalt) return { parent: inhalt, before: planet.nextSibling };
+        if(inhalt) return { parent: inhalt, before: null };
+        return null;
+    }
+
     function build()
     {
         if(document.querySelector('.oih_box')) return true;
 
-        // Insert our own box in normal flow, between the shop image/detail area and the
-        // inventory list (#buttonz). Fallbacks keep it inside the shop container.
-        const buttonz = document.querySelector('#buttonz');
-        const planet = document.querySelector('#planet');
-        const inhalt = document.querySelector('#inhalt');
-        let insertBefore = null, parent = null;
-        if(buttonz && buttonz.parentNode) { parent = buttonz.parentNode; insertBefore = buttonz; }
-        else if(planet && inhalt) { parent = inhalt; insertBefore = planet.nextSibling; }
-        else if(inhalt) { parent = inhalt; }
-        else return false;
+        const spot = boxSpot();
+        if(!spot) return false;
 
         const items = collectItems();
         if(!items.length) return false; // shop content not rendered yet — observer will retry
@@ -1622,7 +1721,7 @@
 
         const box = document.createElement('div');
         box.className = 'oih_box';
-        parent.insertBefore(box, insertBefore);
+        spot.parent.insertBefore(box, spot.before);
 
         // Header row: what this is, what you are looking for, how much is listed.
         const head = el('div', 'oih_head', box);
@@ -1648,6 +1747,14 @@
         gear.title = T('tipSettings');
         gear.addEventListener('click', () => openSettings(() => { syncFilters(); render(); }));
 
+        // ⓘ: the premium-content notice the player accepted, readable again at any time (asked for
+        // by the OGame Origin team). It opens in the box, in flow, like the help text below it.
+        const infoBtn = el('div', 'oih_helpBtn oih_infoBtn', bar, 'ⓘ');
+        infoBtn.title = N('info');
+        const info = el('div', 'oih_help oih_hidden', box);
+        noticeBlock(info);
+        infoBtn.addEventListener('click', () => info.classList.toggle('oih_hidden'));
+
         const helpBtn = el('div', 'oih_helpBtn', bar, '?');
         helpBtn.title = T('help');
         // The tips read "Name: what it does"; the help panel prints the name in bold and the
@@ -1669,7 +1776,7 @@
         // whereas the settings in the panel are choices and do survive.
         const filters = { cat: '', exp: false, active: false };
         const fRow = el('div', 'oih_filters', box);
-        box.insertBefore(fRow, help); // straight under the control bar, above the help text
+        box.insertBefore(fRow, info); // straight under the control bar, above the notice and help text
         fRow.title = T('tipCats');
         let catLabels = {};
 
@@ -2314,7 +2421,42 @@
         catch(e) { console.error('[OGItemHelper] failed:', e); }
     }
 
-    if(IS_SHOP) start();
-    else if(IS_OVERVIEW) startOverview();
-    startTimers();
+    function run()
+    {
+        if(IS_SHOP) start();
+        else if(IS_OVERVIEW) startOverview();
+        startTimers();
+    }
+
+    // First use: until the player has accepted the premium-content notice, the tool does nothing
+    // at all — no box, no overview reminder, no badges, not even reading the shop. The notice is
+    // shown where the tool is used, in the shop, in the box's own spot (normal flow, covering
+    // nothing). The game's shop stays fully usable around it. Once accepted, the tool starts on
+    // the spot, without a reload.
+    function gate()
+    {
+        if(!IS_SHOP) return;
+        const place = () =>
+        {
+            if(document.querySelector('.oih_box')) return true;
+            const spot = boxSpot();
+            if(!spot) return false;
+            injectStyle();
+            const box = document.createElement('div');
+            box.className = 'oih_box oih_gate';
+            const head = el('div', 'oih_head', box);
+            el('div', 'oih_title', head, '<span>&#9670;</span> Item Helper');
+            noticeBlock(box, () => { obs.disconnect(); box.remove(); run(); }).style.marginTop = '8px';
+            spot.parent.insertBefore(box, spot.before);
+            return true;
+        };
+        // The shop redraws itself and may wipe the notice; keep it there until it is answered.
+        // DOM only — nothing is asked of the server (§1.3/§4).
+        const obs = new MutationObserver(place);
+        obs.observe(document.body, { childList: true, subtree: true });
+        place();
+    }
+
+    if(noticeAcked()) run();
+    else gate();
 })();
