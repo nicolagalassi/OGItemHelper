@@ -1394,7 +1394,8 @@
     // of its own: it takes the hashes off the items and the wording off the game's own buttons.
     // What it learns is stored, because those buttons exist only on the tab currently rendered and
     // the filters have to work on the other one too.
-    const CAT_KEY = 'oih_cats';
+    // v2: v1 could hold labels scraped off unrelated nodes (resource bar, coordinates) — dropped.
+    const CAT_KEY = 'oih_cats_v2';
     function loadCatLabels()
     {
         try { const o = JSON.parse(localStorage.getItem(CAT_KEY) || 'null'); return (o && typeof o === 'object') ? o : {}; }
@@ -1406,7 +1407,7 @@
     function scrapeCatLabel(h)
     {
         let nodes = [];
-        try { nodes = [...document.querySelectorAll(`[data-category="${h}"],[data-filter="${h}"],[href*="${h}"],[id*="${h}"],[class*="${h}"]`)]; }
+        try { nodes = [...document.querySelectorAll(`[data-category="${h}"],[data-filter="${h}"],a[href*="category=${h}"]`)]; }
         catch(e) { return ''; }
         for(const n of nodes)
         {
@@ -1416,7 +1417,9 @@
             for(const c of cand)
             {
                 const v = stripTags(c || '');
-                if(v && v.length <= 28) return v;
+                // A category name is words: anything carrying digits is a resource figure, a
+                // coordinate or a counter picked up by mistake, never a filter label.
+                if(v && v.length <= 28 && !/\d/.test(v)) return v;
             }
         }
         return '';
