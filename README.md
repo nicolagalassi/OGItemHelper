@@ -10,7 +10,7 @@ the whole tool.
 
 > **Status: tolerated by the OGame Origin team.** The tool works next to premium content (shop
 > items, Dark Matter purchases and activations), so on its first use it shows a notice about that,
-> which you must accept before it does anything; the ⓘ in the box shows it again. See
+> which you must accept before it does anything; the "i" button in the box shows it again. See
 > [CHANGELOG.md](CHANGELOG.md).
 
 It moved here from [PrOGect](https://github.com/nicolagalassi/PrOGect), a collection of OGame

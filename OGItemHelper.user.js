@@ -71,7 +71,7 @@
   PREMIUM-CONTENT NOTICE (asked for by the OGame Origin team when they tolerated the tool)
   - The first time, the shop shows only a notice that the tool interacts with premium content
     (items, Dark Matter purchases and activations); the tool does nothing until the player presses
-    "I understand". The acknowledgement is stored locally, and the ⓘ in the box shows the notice
+    "I understand". The acknowledgement is stored locally, and the i button in the box shows the notice
     again at any time. In the player's interface language, English otherwise.
 
   COMPLIANCE (OGame Origin tool rules — see AGENTS.md):
@@ -206,7 +206,7 @@
         .oih_help b{color:var(--text);font-weight:600}
         .oih_help .oih_notice{margin:0}
 
-        /* ---- premium-content notice: first-use gate, and again behind the ⓘ ---- */
+        /* ---- premium-content notice: first-use gate, and again behind the i button ---- */
         .oih_notice{padding:9px 11px;border:1px solid #8A6323;border-left:3px solid var(--gold);border-radius:3px;background:rgba(255,194,77,.07)}
         .oih_noticeT{font-family:var(--disp);font-size:12.5px;letter-spacing:1px;text-transform:uppercase;color:var(--gold)}
         .oih_noticeB{margin-top:6px;font-size:11.5px;line-height:1.55;color:var(--text)}
@@ -976,7 +976,7 @@
     // ---- Premium-content notice -----------------------------------------------------------------
     // Asked for by the OGame Origin team when they tolerated the tool: it works next to shop items
     // and Dark Matter, so the player must read and accept this before the tool does anything, and
-    // must be able to read it again later (the ⓘ in the box). The wording stays GENERAL on purpose —
+    // must be able to read it again later (the i button in the box). The wording stays GENERAL on purpose —
     // it must not describe how the tool works, so it stays true when the tool changes. English is
     // the team's text; the other languages translate it without changing its meaning.
     // Bump NOTICE_VER only if the team changes the text: every player is then asked again.
@@ -1035,7 +1035,7 @@
 
     // The notice itself, as a block in normal flow like the box: it covers nothing the game draws
     // (§1.7). `onAck` is passed only for the first-use gate, where the button must be pressed;
-    // reopened from the ⓘ it is just text to read again.
+    // reopened from the i button it is just text to read again.
     function noticeBlock(parent, onAck)
     {
         const n = el('div', 'oih_notice', parent);
@@ -1747,9 +1747,9 @@
         gear.title = T('tipSettings');
         gear.addEventListener('click', () => openSettings(() => { syncFilters(); render(); }));
 
-        // ⓘ: the premium-content notice the player accepted, readable again at any time (asked for
+        // i: the premium-content notice the player accepted, readable again at any time (asked for
         // by the OGame Origin team). It opens in the box, in flow, like the help text below it.
-        const infoBtn = el('div', 'oih_helpBtn oih_infoBtn', bar, 'ⓘ');
+        const infoBtn = el('div', 'oih_helpBtn oih_infoBtn', bar, 'i');
         infoBtn.title = N('info');
         const info = el('div', 'oih_help oih_hidden', box);
         noticeBlock(info);

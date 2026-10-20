@@ -6,7 +6,7 @@
   time the tool is used, the shop shows only a notice that the tool interacts with premium content
   (items, purchases and activations with Dark Matter); the tool does nothing — no box, no overview
   reminder, no time-left badges — until the player presses "I understand". The answer is stored in
-  the browser (`localStorage`), so it is asked once. Afterwards the ⓘ in the box shows the notice
+  the browser (`localStorage`), so it is asked once. Afterwards the "i" button in the box shows the notice
   again. It is in the player's interface language (IT/EN/DE/FR/ES/PL/TR/PT/RU), English otherwise.
 
 ## 1.2.0
