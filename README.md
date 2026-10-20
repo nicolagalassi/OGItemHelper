@@ -13,9 +13,6 @@ the whole tool.
 > which you must accept before it does anything; the "i" button in the box shows it again. See
 > [CHANGELOG.md](CHANGELOG.md).
 
-It moved here from [PrOGect](https://github.com/nicolagalassi/PrOGect), a collection of OGame
-userscripts; its full history came with it.
-
 ## Install
 
 1. Install [Tampermonkey](https://www.tampermonkey.net/).

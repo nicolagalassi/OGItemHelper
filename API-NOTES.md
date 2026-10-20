@@ -1,10 +1,10 @@
-# API OGame usabili dal tool — riferimento PrOGect
+# API OGame usabili dal tool — riferimento
 
-Mappa delle API OGame sfruttabili da PrOGect e di come usarle **in modo leggero e conforme**.
+Mappa delle API OGame sfruttabili da un tool OGame e di come usarle **in modo leggero e conforme**.
 Ogni endpoint riporta il suo vincolo di conformità **al punto d'uso** (riferimenti a `AGENTS.md`).
 
 **Fonti:** `AGENTS.md` §1.3/§1.5.1/§4/§6 (autorevoli) · doc `ogame-one/docs/EXTERNALDATAEXPORT.md`
-(verificata live su Singularity `s808-en`, 13.0.0-beta) · endpoint realmente usati in `archived/progect/PrOGect.user.js`.
+(verificata live su Singularity `s808-en`, 13.0.0-beta).
 
 > Regola d'oro: **una feature nuova ≈ funzione pura sui dati GIÀ idratati + un po' di UI**, non un
 > nuovo sistema di fetch/sync. Vedi "Inventario data-layer" e "Regola operativa" in fondo.
@@ -42,7 +42,7 @@ https://<sX-XX>.ogame.gameforge.com/api/<file>?toJson=1      # oppure .xml
 ## Livello 2 — Endpoint report / statistiche (proxy + stringa API del report)
 
 Rapporti spionaggio / battaglia / espedizione: si aprono con la **stringa API** del report (pulsante
-"API" in gioco) passata al proxy o al simulatore. PrOGect lo fa già (es. `genTrashsimLink`).
+"API" in gioco) passata al proxy o al simulatore.
 
 **Conformità §6:** via proxy (o, per eccezione, chiave privata riservata a pochi tool); non inventare
 endpoint o credenziali.
@@ -52,7 +52,7 @@ endpoint o credenziali.
 ## Livello 3 — Endpoint in-game AJAX (sessione autenticata, same-origin)
 
 I dati ricchi/live. Chiamate `fetch` con `credentials:'include'` e header
-`X-Requested-With: XMLHttpRequest`. Sono quelli che PrOGect **già usa** su v13.
+`X-Requested-With: XMLHttpRequest`, verificati su v13.
 
 | Endpoint (`index.php?...`) | Dà | Vincolo al punto d'uso |
 |---|---|---|
